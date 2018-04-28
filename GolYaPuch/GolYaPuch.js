@@ -77,7 +77,7 @@ function nextRoundDetector(inputArray) {
     }
 
     if (inputArray[0].score != inputArray[1].score) {
-        document.getElementById("winner").innerHTML = players[0].name;
+        document.getElementById("winner").innerHTML = "The winner player is: " + players[0].name;
         
         for (let i = inputArray.length - 1; i >= numOfPrimaryWinners; i--) {
             ranking[i].name = inputArray[i].name;
@@ -98,6 +98,8 @@ function nextRoundDetector(inputArray) {
             ranking[i].score = inputArray[i].score;
             delete inputArray[i];
         }
+
+        console.log("number of primary winners" + inputArray.length)
         
         inputArray = toGame(inputArray,1)
         sort(inputArray);
