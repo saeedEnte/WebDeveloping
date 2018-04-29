@@ -3,7 +3,7 @@ function mainFunc() {
     // window.alert(typeof numOfPlayers);
     // console.log(typeof numOfPlayers);
     numOfPlayers = parseInt(numOfPlayers);
-    var numOfGames = 5;
+    var numOfGames = 3;
     var name;
     // var players = [numOfPlayers];
     players = [];
@@ -33,15 +33,6 @@ function mainFunc() {
 
 }
 
-function getRndInteger(min, max) {
-    // return Math.floor(Math.random() * (max - min) ) + min;
-    if (Math.random() < 0.5) {
-        return 0;
-    } else {
-        return 1;
-    }
-}
-
 function sort(inArray) {
 
     for (let ii = 0; ii < inArray.length; ii++) {
@@ -49,7 +40,7 @@ function sort(inArray) {
             if (inArray[jj].score < inArray[jj + 1].score) {
                 temp = inArray[jj];
                 inArray[jj] = inArray[jj + 1];
-                inArray[jj + 1] = inArray[jj];
+                inArray[jj + 1] = temp;
             }
         }
     }
@@ -58,12 +49,15 @@ function sort(inArray) {
 function toGame(inputPlayers, numberOfGames) {
     for (let playNumber = 0; playNumber < numberOfGames; playNumber++) {
         for (let player = 0; player < inputPlayers.length; player++) {
-            inputPlayers[player].currentSelect = getRndInteger(0, 1);
-            generatedRand = getRndInteger(0, 1);
-            if (inputPlayers[player].currentSelect == generatedRand) {
+            inputPlayers[player].currentSelect = Math.random() * 2;
+            generatedRand = Math.random() * 2;
+            if (Math.floor(inputPlayers[player].currentSelect) == Math.floor(generatedRand)) {
                 inputPlayers[player].score ++;
             }
+            console.log("the player "+inputPlayers[player].name+" has played for "+playNumber+"th times");
+            console.log("the score of "+inputPlayers[player].name+" is: "+inputPlayers[player].score)
         }
+        
     }
     return inputPlayers;
 }
@@ -79,31 +73,45 @@ function nextRoundDetector(inputArray) {
     if (inputArray[0].score != inputArray[1].score) {
         document.getElementById("winner").innerHTML = "The winner player is: " + players[0].name;
         
-        for (let i = inputArray.length - 1; i >= numOfPrimaryWinners; i--) {
-            ranking[i].name = inputArray[i].name;
-            ranking[i].score = inputArray[i].score;
+        for (let i = 0; i < inputArray.length; i++) {
+            // ranking[i].name = inputArray[i].name;
+            // ranking[i].score = inputArray[i].score;
+            console.log(inputArray[i].name+"\t"+inputArray[i].score);
         }
-
-        return ranking;
     }
 
     else {
+        // console.log("Hello my alternative condition!");
         var numOfPrimaryWinners = 0;
-        while (inputArray[numOfPrimaryWinners].score == inputArray[0].score) {
-            numOfPrimaryWinners++;
+
+        for (let i = 0; i < inputArray.length; i++) {
+            if (inputArray[i].score == inputArray[0].score) {
+                numOfPrimaryWinners ++;
+            }
+            else{
+                break;
+            }      
         }
 
-        for (let i = inputArray.length - 1; i >= numOfPrimaryWinners; i--) {
-            ranking[i].name = inputArray[i].name;
-            ranking[i].score = inputArray[i].score;
-            delete inputArray[i];
-        }
+        console.log("The number of primary winners is: "+numOfPrimaryWinners)
 
+        // for (let i = inputArray.length - 1; i >= numOfPrimaryWinners; i--) {
+        //     ranking[i].name = inputArray[i].name;
+        //     ranking[i].score = inputArray[i].score;
+        // }
+        
+        inputArray.splice(numOfPrimaryWinners,inputArray.length-1);
+        
         console.log("number of primary winners" + inputArray.length)
         
         inputArray = toGame(inputArray,1)
         sort(inputArray);
+
+        for (let p = 0; p < players.length; p++) {
+            console.log(players[p].score);
+        }
+
         nextRoundDetector(inputArray);
     }
-    return ranking;
+    // return ranking;
 }
