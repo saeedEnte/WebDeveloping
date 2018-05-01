@@ -5,6 +5,17 @@ function main_to_test(){
     console.log(myArray.length);
     myArray = array_resizer();
     console.log(myArray.length);
+    var objecArray = [];
+    
+    var person = {
+        name : "Saeed",
+        age : 24
+    };
+
+    objecArray.push(new Object());
+    objecArray[objecArray.length-1] = person;
+
+    console.log(objecArray[0].name+"\t"+objecArray[0].age)
 }
 
 function array_resizer(a) {
